@@ -39,7 +39,7 @@
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
       <div class="navbar-bg"></div>
-      <?php include('../components/layout/navbar.php'); ?>
+      <?php include('../components/layout/navbar-index.php'); ?>
       <!-- sidebar -->
       <?php include('../components/layout/sidebar.php'); ?>
       <!-- Main Content -->
