@@ -36,8 +36,8 @@ class Category extends Model {
         return parent::search_data($keyword, $this->table);
     }
 
-    public function paginate($limit, $start)
+    public function paginate($start, $limit)
     {
-       return parent::paginate_data($limit, $start, $this->table);
+       return parent::paginate_data($start, $limit, $this->table);
     }
 }
