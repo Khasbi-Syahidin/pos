@@ -1,3 +1,16 @@
+<?php
+
+require_once __DIR__ . '/../Model/Model.php';
+require_once __DIR__ . '/../Model/Category.php';
+
+
+$categories = new Category();
+
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,7 +66,7 @@
                     <div class="card-header-form">
                       <form>
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search">
+                          <input type="text" class="form-control" id="search" placeholder="Search">
                           <div class="input-group-btn">
                             <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                           </div>
@@ -62,7 +75,7 @@
                     </div>
                   </div>
                   <div class="card-body p-0">
-                    <div class="table-responsive">
+                    <div id="content" class="table-responsive">
                       <table class="table table-striped">
                         <tr>
                           <th>
@@ -74,20 +87,22 @@
                           <th>Nama Categori</th>
                           <th>Action</th>
                         </tr>
-                        <tr>
+                        <?php foreach ($categories->paginate(0, 3) as $category) : ?>
+                        <tr >
                           <td class="">
                             <div class="custom-checkbox custom-control">
                               <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
                               <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                             </div>
                           </td>
-                          <td>Create a mobile app</td>
+                          <td><?= $category["name"] ?></td>
                           <td class="justify-content-end">
-                            <a href="#" class="btn btn-primary mr-1"><i class="far fa-eye"></i> Detail</a>
-                            <a href="#" class="btn btn-success mr-1"> <i class="far fa-edit"></i> Edit</a>
-                            <a href="#" class="btn btn-danger mr-1"><i class="far fa-trash-alt"></i> Hapus</a>
+                            <a href="detail-category.php?id=<?= $category["id"] ?>" class="btn btn-primary mr-1"><i class="far fa-eye"></i> Detail</a>
+                            <a href="edit-category.php?id=<?= $category["id"] ?>" class="btn btn-success mr-1"> <i class="far fa-edit"></i> Edit</a>
+                            <a href="delete-category.php?id=<?= $category["id"] ?>" class="btn btn-danger mr-1"><i class="far fa-trash-alt"></i> Hapus</a>
                           </td>
                         </tr>
+                        <?php endforeach ?>
                       </table>
                     </div>
                   </div>
@@ -117,6 +132,15 @@
   <!-- Template JS File -->
   <script src="../assets/js/scripts.js"></script>
   <script src="../assets/js/custom.js"></script>
+
+
+  <script>
+    $(document).ready(function() {
+      $("#search").on("keyup", function() {
+        $("#content").load("../assets/search/category.php?keyword=" + $(this).val());
+      });
+    });
+  </script>
 </body>
 
 </html>
