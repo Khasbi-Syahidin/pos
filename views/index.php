@@ -1,3 +1,24 @@
+<?php
+
+require_once __DIR__ . '/../Model/Model.php';
+require_once __DIR__ . '/../Model/Category.php';
+require_once __DIR__ . '/../Model/Item.php';
+
+if(!isset($_SESSION["full_name"])) {
+  header("Location: login.php");
+  exit;
+}
+
+$categories = new Category();
+$menus = new Item();
+
+?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,11 +74,11 @@
                   </div>
                   <div class="card-stats-items">
                     <div class="card-stats-item">
-                      <div class="card-stats-item-count">2</div>
+                      <div class="card-stats-item-count"><?= count($categories->all()) ?></div>
                       <div class="card-stats-item-label">Category</div>
                     </div>
                     <div class="card-stats-item">
-                      <div class="card-stats-item-count">12</div>
+                      <div class="card-stats-item-count"><?= count($menus->all()) ?></div>
                       <div class="card-stats-item-label">Menu</div>
                     </div>
                     <div class="card-stats-item">
@@ -71,10 +92,10 @@
                 </div>
                 <div class="card-wrap">
                   <div class="card-header">
-                    <h4>Items</h4>
+                    <h4>Menu</h4>
                   </div>
                   <div class="card-body">
-                    59
+                    <?= count($menus->all()) ?>
                   </div>
                 </div>
               </div>

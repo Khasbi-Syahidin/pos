@@ -15,7 +15,11 @@ modal_3_body += "   }\n"
 modal_3_body += ' }\n';
 modal_3_body += ']';
 modal_3_body += '</code></pre>';
-$("#modal-3").fireModal({
+
+
+
+
+$(".modal-3").fireModal({
   title: 'Modal with Buttons',
   body: modal_3_body,
   buttons: [

@@ -1,3 +1,19 @@
+<?php 
+
+
+require_once __DIR__ . '/../Model/Model.php';
+require_once __DIR__ . '/../Model/Category.php';
+require_once __DIR__ . '/../Model/Item.php';
+
+if(!isset($_SESSION["full_name"])) {
+  header("Location: login.php");
+  exit;
+}
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

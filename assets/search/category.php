@@ -11,7 +11,6 @@ $categories = $categories->search($keyword);
 
 ?>
 
-
 <div class="table-responsive">
     <table class="table table-striped">
         <tr>
@@ -32,7 +31,7 @@ $categories = $categories->search($keyword);
                         <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                     </div>
                 </td>
-                <td><?= $category["name"] ?></td>
+                <td><?= $category["name_category"] ?></td>
                 <td class="justify-content-end">
                     <a href="detail-category.php?id=<?= $category["id"] ?>" class="btn btn-primary mr-1"><i class="far fa-eye"></i> Detail</a>
                     <a href="edit-category.php?id=<?= $category["id"] ?>" class="btn btn-success mr-1"> <i class="far fa-edit"></i> Edit</a>

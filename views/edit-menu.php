@@ -10,11 +10,18 @@ if(!isset($_SESSION["full_name"])) {
   exit;
 }
 
+$id = $_GET['id'];
+if(!isset($id)){
+  header("Location: index-menu.php");
+  exit;
+}
 
 $categories = new Category();
 $categories = $categories->all();
 
 $menu = new Item();
+$detail_menu = $menu->find($id);
+var_dump($detail_menu);
 
 if(isset($_POST["submit"])){
 
@@ -24,9 +31,9 @@ if(isset($_POST["submit"])){
   ];
   $result = $menu->create($datas);
   if(gettype($result) == "string"){
-    echo "<script>alert('{$result}'); window.location.href = 'create-menu.php';</script>";
+    echo "<script>alert('{$result}'); window.location.href = 'edit-menu.php';</script>";
   }else{
-    echo "<script>alert('Menu berhasil ditambahkan'); window.location.href = 'create-menu.php';</script>";
+    echo "<script>alert('Menu berhasil ditambahkan'); window.location.href = 'index-menu.php';</script>";
   }
 }
 
@@ -98,8 +105,8 @@ if(isset($_POST["submit"])){
                 <div class="card w-full">
                   <form action="" method="POST" enctype="multipart/form-data" class="card-body">
                     <div class="form-group">
-                      <label for="full_name">Nama Menu</label>
-                      <input name="full_name" type="text" id="full_name" class="form-control">
+                      <label for="name">Nama Menu</label>
+                      <input name="name" type="text" id="name" class="form-control">
                     </div>
                     <div class="form-group d-flex flex-column ">
                       <label for="attachment" class="form-control-label">Gambar</label>

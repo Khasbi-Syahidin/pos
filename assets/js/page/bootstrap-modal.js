@@ -15,6 +15,17 @@ modal_3_body += "   }\n"
 modal_3_body += ' }\n';
 modal_3_body += ']';
 modal_3_body += '</code></pre>';
+
+
+function modalDetail(id) {
+  console.log(id);
+  fireModal({
+    body: 'Modal body text goes here.',
+    center: true
+  })
+}
+
+
 $("#modal-3").fireModal({
   title: 'Modal with Buttons',
   body: modal_3_body,

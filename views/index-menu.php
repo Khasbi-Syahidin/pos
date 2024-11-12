@@ -1,211 +1,187 @@
+<?php
+require_once __DIR__ . "/../Model/Model.php";
+require_once __DIR__ . "/../Model/Item.php";
+
+
+if (!isset($_SESSION["full_name"])) {
+    header("Location: login.php");
+    exit;
+}
+
+
+$items = new Item();
+
+$limit = 2;
+$halAktif = (isset($_GET["page"])) ? $_GET["page"] : 1;
+$start = ($limit * $halAktif) - $limit;
+$length = count($items->All());
+$countPage = ceil($length / $limit);
+// var_dump($items->all2());
+
+$items = $items->all2($start, $limit);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Blank Page &mdash; Stisla</title>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Blank Page &mdash; Stisla</title>
 
-  <!-- General CSS Files -->
-  <link rel="stylesheet" href="../assets/modules/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../assets/modules/fontawesome/css/all.min.css">
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="../assets/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/modules/fontawesome/css/all.min.css">
 
-  <!-- CSS Libraries -->
+    <!-- CSS Libraries -->
 
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
-<!-- Start GA -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <!-- Start GA -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'UA-94034622-3');
-</script>
-<!-- /END GA --></head>
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-94034622-3');
+    </script>
+    <!-- /END GA -->
+</head>
 
 <body>
-  <div id="app">
-    <div class="main-wrapper main-wrapper-1">
-      <div class="navbar-bg"></div>
-      <?php include('../components/layout/navbar.php'); ?>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <?php include "../components/layout/navbar.php" ?>
+            <?php include "../components/layout/sidebar.php" ?>
 
-      <?php include('../components/layout/sidebar.php'); ?>
-
-      <!-- Main Content -->
-      <div class="main-content">
-        <section class="section">
-          <div class="section-header">
-            <h1>Home Menu</h1>
-          </div>
-
-          <div class="section-body">
-          <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Advanced Table</h4>
-                    <div class="card-header-form">
-                      <form>
-                        <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Search">
-                          <div class="input-group-btn">
-                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                          </div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <section class="section">
+                    <div class="section-header">
+                        <h1>Halaman Menu</h1>
+                    </div>
+                    <div class="section-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Advanced Table</h4>
+                                        <div class="card-header-form">
+                                            <form action="" method="post">
+                                                <div class="input-group">
+                                                    <input type="text" id="search" name="search" class="form-control" placeholder="Search">
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-primary" id="search-btn" name="search-btn"><i class="fas fa-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div id="content" class="table-responsive">
+                                            <table class="table table-striped">
+                                                <tr>
+                                                    <th>
+                                                        <div class="custom-checkbox custom-control">
+                                                            <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
+                                                            <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
+                                                        </div>
+                                                    </th>
+                                                    <th>Nama</th>
+                                                    <th>Attachment</th>
+                                                    <th>Harga</th>
+                                                    <th>Category</th>
+                                                    <th>Waktu</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                                <?php foreach ($items as $category): ?>
+                                                    <tr>
+                                                        <td class="p-0 text-center">
+                                                            <div class="custom-checkbox custom-control">
+                                                                <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
+                                                                <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
+                                                            </div>
+                                                        </td>
+                                                        <td><?= $category["name_item"] ?></td>
+                                                        <td><img src="../public/img/items/<?= $category["attachment"] ?>" width="50"></td>
+                                                        <td><?= $category["price"] ?></td>
+                                                        <td><?= $category["name_category"] ?></td>
+                                                        <td><?= $category["created_at_item"] ?></td>
+                                                        <td>
+                                                            <a href="index.php?id=<?= $category['id_item'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
+                                                            <a href="edit-menu.php?id=<?= $category['id_item'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="delete-menu.php?id=<?= $category['id_item'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body d-flex justify-content-end">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <?php $prevDis = ($halAktif == 1) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $prevDis ?>">
+                                                <?php $prev = ($halAktif == 1) ? 1 : $halAktif - 1; ?>
+                                                <a class="page-link" href="?page=<?= $prev ?>" tabindex="-1">Previous</a>
+                                            </li>
+                                            <?php for ($i = 1; $i <= $countPage; $i++) : ?>
+                                                <?php $pageAktif = ($halAktif == $i) ? "btn-outline-primary" : ""; ?>
+                                                <li class="page-item">
+                                                    <a class="page-link <?= $pageAktif ?>" href="?page=<?= $i ?>"><?= $i ?></a>
+                                                </li>
+                                            <?php endfor ?>
+                                            <?php $nextDis = ($halAktif == $countPage) ? "disabled" : ""; ?>
+                                            <li class="page-item <?= $nextDis ?>">
+                                                <?php $next = ($halAktif == $countPage) ? $countPage : $halAktif + 1; ?>
+                                                <a class="page-link" href="?page=<?= $next ?>">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
-                      </form>
                     </div>
-                  </div>
-                  <div class="card-body p-0">
-                    <div class="table-responsive">
-                      <table class="table table-striped">
-                        <tr>
-                          <th>
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" class="custom-control-input" id="checkbox-all">
-                              <label for="checkbox-all" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </th>
-                          <th>Task Name</th>
-                          <th>Progress</th>
-                          <th>Members</th>
-                          <th>Due Date</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                        </tr>
-                        <tr>
-                          <td class="p-0 text-center">
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-1">
-                              <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>Create a mobile app</td>
-                          <td class="align-middle">
-                            <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                              <div class="progress-bar bg-success" data-width="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <img alt="image" src="../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
-                          </td>
-                          <td>2018-01-20</td>
-                          <td><div class="badge badge-success">Completed</div></td>
-                          <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 text-center">
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-2">
-                              <label for="checkbox-2" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>Redesign homepage</td>
-                          <td class="align-middle">
-                            <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
-                              <div class="progress-bar" data-width="0"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
-                            <img alt="image" src="../assets/img/avatar/avatar-3.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
-                            <img alt="image" src="../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
-                          </td>
-                          <td>2018-04-10</td>
-                          <td><div class="badge badge-info">Todo</div></td>
-                          <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 text-center">
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-3">
-                              <label for="checkbox-3" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>Backup database</td>
-                          <td class="align-middle">
-                            <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
-                              <div class="progress-bar bg-warning" data-width="70"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                            <img alt="image" src="../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
-                          </td>
-                          <td>2018-01-29</td>
-                          <td><div class="badge badge-warning">In Progress</div></td>
-                          <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                        </tr>
-                        <tr>
-                          <td class="p-0 text-center">
-                            <div class="custom-checkbox custom-control">
-                              <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-4">
-                              <label for="checkbox-4" class="custom-control-label">&nbsp;</label>
-                            </div>
-                          </td>
-                          <td>Input data</td>
-                          <td class="align-middle">
-                            <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                              <div class="progress-bar bg-success" data-width="100"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <img alt="image" src="../assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                            <img alt="image" src="../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                            <img alt="image" src="../assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                            <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
-                          </td>
-                          <td>2018-01-16</td>
-                          <td><div class="badge badge-success">Completed</div></td>
-                          <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                        </tr>
-                      </table>
+
+                    <div class="section-body">
                     </div>
-                  </div>
-                  <div class="card-body w-full d-flex justify-content-end">
-                    <nav aria-label="...">
-                      <ul class="pagination">
-                        <li class="page-item disabled">
-                          <a class="page-link" href="#" tabindex="-1">Previous</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active">
-                          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                          <a class="page-link" href="#">Next</a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div>
-              </div>
+                </section>
             </div>
-          </div>
-        </section>
-      </div>
-      <?php include('../components/layout/footer.php'); ?>
+            <?php include "../components/layout/footer.php" ?>
+        </div>
     </div>
-  </div>
 
-  <!-- General JS Scripts -->
-  <script src="../assets/modules/jquery.min.js"></script>
-  <script src="../assets/modules/popper.js"></script>
-  <script src="../assets/modules/tooltip.js"></script>
-  <script src="../assets/modules/bootstrap/js/bootstrap.min.js"></script>
-  <script src="../assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
-  <script src="../assets/modules/moment.min.js"></script>
-  <script src="../assets/js/stisla.js"></script>
-  
-  <!-- JS Libraies -->
+    <!-- General JS Scripts -->
+    <script src="../assets/modules/jquery.min.js"></script>
+    <script src="../assets/modules/popper.js"></script>
+    <script src="../assets/modules/tooltip.js"></script>
+    <script src="../assets/modules/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="../assets/modules/moment.min.js"></script>
+    <script src="../assets/js/stisla.js"></script>
 
-  <!-- Page Specific JS File -->
-  
-  <!-- Template JS File -->
-  <script src="../assets/js/scripts.js"></script>
-  <script src="../assets/js/custom.js"></script>
+    <!-- JS Libraies -->
+
+    <!-- Page Specific JS File -->
+
+    <!-- Template JS File -->
+    <script src="../assets/js/scripts.js"></script>
+    <script src="../assets/js/custom.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                //console.log($("#search").val());
+                $("#content").load("../assets/search/menu.php?keyword=" + $(this).val());
+            });
+        });
+    </script>
 </body>
+
 </html>

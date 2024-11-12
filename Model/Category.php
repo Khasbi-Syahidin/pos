@@ -32,7 +32,7 @@ class Category extends Model {
 
     public function search($keyword)
     {
-        $keyword = " WHERE name LIKE '%{$keyword}%'";
+        $keyword = " WHERE category_name LIKE '%{$keyword}%'";
         return parent::search_data($keyword, $this->table);
     }
 

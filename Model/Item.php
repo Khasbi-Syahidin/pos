@@ -51,4 +51,23 @@ class Item extends Model
     {
         return parent::delete_data($id, $this->table);
     }
+
+    public function search($keyword)
+    {
+        $keyword = " WHERE name LIKE '%{$keyword}%'";
+        return parent::search_data($keyword, $this->table);
+    }
+
+    public function paginate($start, $limit)
+    {
+       return parent::paginate_data($start, $limit, $this->table);
+    }
+
+
+    public function all2($start, $limit)
+    {
+        $query = "SELECT * FROM items INNER JOIN categories ON items.category_id = categories.id_category LIMIT $start, $limit;";
+        $result = mysqli_query($this->db, $query);
+        return $this->convert_data($result);
+    }
 }

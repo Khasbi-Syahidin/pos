@@ -1,4 +1,8 @@
 <?php 
+
+session_start();
+
+
 require_once __DIR__ . '/../DB/Connection.php';
 require_once __DIR__ . '/../Interface/ModelInterface.php';
 
