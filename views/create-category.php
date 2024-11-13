@@ -3,12 +3,10 @@
 require_once __DIR__ . '/../Model/Model.php';
 require_once __DIR__ . '/../Model/Category.php';
 
-
 if(!isset($_SESSION["full_name"])) {
   header("Location: login.php");
   exit;
 }
-
 
 if (isset($_POST["submit"])) {
   $category = [

@@ -23,7 +23,7 @@ class Item extends Model
         $nama_file = random_int(1000, 9999) . "." . $ekstensi_file;
         move_uploaded_file($tmp_name, "../public/img/items/" . $nama_file);
         $datas = [
-            "name" => $datas["post"]["name"],
+            "name_item" => $datas["post"]["name_item"],
             "attachment" => $nama_file,
             "price" => $datas["post"]["price"],
             "category_id" => $datas["post"]["category_id"],

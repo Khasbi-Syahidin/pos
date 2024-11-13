@@ -98,8 +98,8 @@ if(isset($_POST["submit"])){
                 <div class="card w-full">
                   <form action="" method="POST" enctype="multipart/form-data" class="card-body">
                     <div class="form-group">
-                      <label for="full_name">Nama Menu</label>
-                      <input name="full_name" type="text" id="full_name" class="form-control">
+                      <label for="name_item">Nama Menu</label>
+                      <input name="name_item" type="text" id="name_item" class="form-control">
                     </div>
                     <div class="form-group d-flex flex-column ">
                       <label for="attachment" class="form-control-label">Gambar</label>
@@ -112,7 +112,7 @@ if(isset($_POST["submit"])){
                       <label for="category_id">Pilih Kategori</label>
                       <select name="category_id" id="category_id" class="form-control selectric">
                         <?php foreach ($categories as $category) : ?>
-                          <option value="<?= $category["id"] ?>"><?= $category["category_name"] ?></option>
+                          <option value="<?= $category["id_category"] ?>"><?= $category["name_category"] ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
