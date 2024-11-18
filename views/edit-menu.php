@@ -21,7 +21,6 @@ $categories = $categories->all();
 
 $menu = new Item();
 $detail_menu = $menu->find($id);
-var_dump($detail_menu);
 
 if(isset($_POST["submit"])){
 
@@ -29,7 +28,7 @@ if(isset($_POST["submit"])){
     "post" => $_POST,
     "files" => $_FILES,
   ];
-  $result = $menu->create($datas);
+  $result = $menu->update($id, $datas);
   if(gettype($result) == "string"){
     echo "<script>alert('{$result}'); window.location.href = 'edit-menu.php';</script>";
   }else{
@@ -93,9 +92,8 @@ if(isset($_POST["submit"])){
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Tambah Menu</h1>
+            <h1>Edit Menu</h1>
           </div>
-
           <div class="section-body">
             <div class="row">
               <div class="col-12 col-md-6 col-lg-6 p-2 d-flex justify-content-center align-items-center">
@@ -105,27 +103,27 @@ if(isset($_POST["submit"])){
                 <div class="card w-full">
                   <form action="" method="POST" enctype="multipart/form-data" class="card-body">
                     <div class="form-group">
-                      <label for="name">Nama Menu</label>
-                      <input name="name" type="text" id="name" class="form-control">
+                      <label for="name_item">Nama Menu</label>
+                      <input name="name_item" type="text" id="name_item" class="form-control" value="<?= $detail_menu[0]['name_item'] ?>">
                     </div>
                     <div class="form-group d-flex flex-column ">
                       <label for="attachment" class="form-control-label">Gambar</label>
                       <div class="custom-file">
-                        <input type="file" name="attachment" class="custom-file-input" id="attachment">
+                        <input type="file" name="attachment" class="custom-file-input" id="attachment" value="<?= $detail_menu[0]['attachment'] ?>">
                         <label class="custom-file-label">Choose File</label>
                       </div>
                     </div>
                     <div class="form-group">
                       <label for="category_id">Pilih Kategori</label>
-                      <select name="category_id" id="category_id" class="form-control selectric">
+                      <select name="category_id" id="category_id" class="form-control selectric" >
                         <?php foreach ($categories as $category) : ?>
-                          <option value="<?= $category["id"] ?>"><?= $category["category_name"] ?></option>
+                          <option value="<?= $category["id_category"] ?>" <?php echo ($category["id_category"] ==  $detail_menu[0]['category_id']) ? ' selected' : '';?> ><?= $category["name_category"] ?></option>
                         <?php endforeach; ?>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="price">Harga</label>
-                      <input type="number" name="price" id="price" class="form-control">
+                      <input type="number" name="price" id="price" class="form-control" value="<?= $detail_menu[0]['price'] ?>">
                     </div>
                     <div class="d-flex justify-content-end">
                       <button name="submit" type="submit" class="btn btn-primary ">Tambahkan</button>

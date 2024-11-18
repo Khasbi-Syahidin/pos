@@ -6,10 +6,9 @@ class Item extends Model
 {
 
     protected $table = 'items';
-
+    protected $primary_key = 'id_item';
     public function create($datas)
     {
-        var_dump($datas["files"]);
         $nama_file = $datas["files"]["attachment"]["name"];
         $tmp_name = $datas["files"]["attachment"]["tmp_name"];
         $ekstensi_file = pathinfo($nama_file, PATHINFO_EXTENSION);
@@ -39,17 +38,42 @@ class Item extends Model
 
     public function find($id)
     {
-        return parent::find_data($id, $this->table);
+        return parent::find_data($id, $this->primary_key, $this->table);
     }
 
     public function update($id, $datas)
     {
-        return parent::update_data($id, $datas, $this->table);
+        $attachment = '';   
+        if ($datas['files']['attachment']["name"] !== '') {
+            $nama_file = $datas["files"]["attachment"]["name"];
+            $tmp_name = $datas["files"]["attachment"]["tmp_name"];
+            $ekstensi_file = pathinfo($nama_file, PATHINFO_EXTENSION);
+            $ekstensi_allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'raw'];
+            if (!in_array($ekstensi_file, $ekstensi_allowed)) {
+                return "Ekstensi file tidak sesuai";
+            }
+            if ($datas["files"]["attachment"]["size"]  > 5000000) {
+                return "Size file tidak boleh lebih dari 5MB";
+            }
+            $nama_file = random_int(1000, 9999) . "." . $ekstensi_file;
+            move_uploaded_file($tmp_name, "../public/img/items/" . $nama_file);
+            $attachment = $nama_file;
+        }
+
+        $datas = [
+            "name_item" => $datas["post"]["name_item"],
+            "price" => $datas["post"]["price"],
+            "category_id" => $datas["post"]["category_id"],
+        ];
+        if($attachment !== '') {
+            $datas["attachment"] = $attachment;
+        }
+        return parent::update_data($id, $this->primary_key, $datas, $this->table);
     }
 
     public function delete($id)
     {
-        return parent::delete_data($id, $this->table);
+        return parent::delete_data($id, $this->primary_key, $this->table);
     }
 
     public function search($keyword)
@@ -60,7 +84,7 @@ class Item extends Model
 
     public function paginate($start, $limit)
     {
-       return parent::paginate_data($start, $limit, $this->table);
+        return parent::paginate_data($start, $limit, $this->table);
     }
 
 

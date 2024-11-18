@@ -20,9 +20,9 @@ $detail_category = $categories->find($id);
 
 if (isset($_POST["submit"])) {
   $category = [
-    "category_name" => $_POST["category_name"]
+    "name_category" => $_POST["name_category"]
   ];
-  if(strlen($_POST["category_name"]) > 225){
+  if(strlen($_POST["name_category"]) > 225){
     echo "<script>alert('Kategori harus dibawah 225 karakter!'); window.location.href = 'edit-category.php';</script>";
     die;
   }
@@ -91,8 +91,8 @@ if (isset($_POST["submit"])) {
                 <div class="card w-full">
                   <form action="" method="POST" class="card-body">
                     <div class="form-group">
-                      <label for="category_name">Nama Kategori Baru</label>
-                      <input type="text" name="category_name" id="category_name" class="form-control" value="<?= $detail_category[0]['category_name'] ?>" >
+                      <label for="name_category">Nama Kategori Baru</label>
+                      <input type="text" name="name_category" id="name_category" class="form-control" value="<?= $detail_category[0]['name_category'] ?>" >
                     </div>
                     <div class="d-flex justify-content-end">
                       <button type="submit" name="submit" class="btn btn-primary ">Edit</button>

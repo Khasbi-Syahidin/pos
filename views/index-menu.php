@@ -34,6 +34,7 @@ $items = $items->all2($start, $limit);
     <link rel="stylesheet" href="../assets/modules/fontawesome/css/all.min.css">
 
     <!-- CSS Libraries -->
+    <link rel="stylesheet" href="../assets/modules/prism/prism.css">
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -100,7 +101,7 @@ $items = $items->all2($start, $limit);
                                                     <th>Waktu</th>
                                                     <th>Aksi</th>
                                                 </tr>
-                                                <?php foreach ($items as $category): ?>
+                                                <?php foreach ($items as $menu): ?>
                                                     <tr>
                                                         <td class="p-0 text-center">
                                                             <div class="custom-checkbox custom-control">
@@ -108,15 +109,15 @@ $items = $items->all2($start, $limit);
                                                                 <label for="checkbox-1" class="custom-control-label">&nbsp;</label>
                                                             </div>
                                                         </td>
-                                                        <td><?= $category["name_item"] ?></td>
-                                                        <td><img src="../public/img/items/<?= $category["attachment"] ?>" width="50"></td>
-                                                        <td><?= $category["price"] ?></td>
-                                                        <td><?= $category["name_category"] ?></td>
-                                                        <td><?= $category["created_at_item"] ?></td>
+                                                        <td><?= $menu["name_item"] ?></td>
+                                                        <td><img src="../public/img/items/<?= $menu["attachment"] ?>" width="50"></td>
+                                                        <td><?= $menu["price"] ?></td>
+                                                        <td><?= $menu["name_category"] ?></td>
+                                                        <td><?= $menu["created_at_item"] ?></td>
                                                         <td>
-                                                            <a href="index.php?id=<?= $category['id_item'] ?>" class="btn btn-primary mr-2"><i class="fas fa-info-circle"></i></a>
-                                                            <a href="edit-menu.php?id=<?= $category['id_item'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
-                                                            <a href="delete-menu.php?id=<?= $category['id_item'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
+                                                            <button onclick="modalDetail(<?= $menu['id_item'] ?>, '<?= $menu['name_item'] ?>', '<?= $menu['attachment'] ?>', '<?= $menu['price'] ?>', '<?= $menu['name_category'] ?>', '<?= $menu['created_at_item'] ?>')" class="btn btn-primary mr-1"><i class="far fa-eye"></i> Detail</button>
+                                                            <a href="edit-menu.php?id=<?= $menu['id_item'] ?>" class="btn btn-success mr-2"><i class="fas fa-edit"></i></a>
+                                                            <a href="../services/delete-menu.php?id=<?= $menu['id_item'] ?>" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i></a>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach ?>
@@ -158,6 +159,26 @@ $items = $items->all2($start, $limit);
         </div>
     </div>
 
+    <!-- modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="detailModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Kategori</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p>Modal body text goes here.</p> -->
+                </div>
+                <div class="modal-footer bg-whitesmoke br">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- General JS Scripts -->
     <script src="../assets/modules/jquery.min.js"></script>
     <script src="../assets/modules/popper.js"></script>
@@ -168,8 +189,10 @@ $items = $items->all2($start, $limit);
     <script src="../assets/js/stisla.js"></script>
 
     <!-- JS Libraies -->
+    <script src="../assets/modules/prism/prism.js"></script>
 
     <!-- Page Specific JS File -->
+    <script src="../assets/js/page/bootstrap-modal.js"></script>
 
     <!-- Template JS File -->
     <script src="../assets/js/scripts.js"></script>
@@ -181,6 +204,20 @@ $items = $items->all2($start, $limit);
                 $("#content").load("../assets/search/menu.php?keyword=" + $(this).val());
             });
         });
+
+        function modalDetail(id, name, attachment, price, category, created_at) {
+            $('#detailModal .modal').empty();
+            let content = '<ul>';
+            content += `<li><strong>Id Kategori:</strong> ${id}</li>`;
+            content += `<li><strong>Nama Menu:</strong> ${name}</li>`;
+            content += `<li><strong>Gambar : </strong> ${attachment}</li>`;
+            content += `<li><strong>Harga: </strong> ${price}</li>`;
+            content += `<li><strong>Kategori: </strong> ${category}</li>`;
+            content += `<li><strong>Dibuat pada : </strong> ${created_at}</li>`;
+            content += '</ul>';
+            $('#detailModal .modal-body').html(content);
+            $('#detailModal').modal('show');
+        }
     </script>
 </body>
 
